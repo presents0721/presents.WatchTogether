@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "一起看位置桥 (Alife)",
+  "version": "1.5.1",
+  "description": "把自己浏览器里正在播的视频进度和画面，报给本机的 Alife「一起看」插件。点扩展图标即自动开始抓画面。",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "storage",
+    "tabCapture",
+    "offscreen",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "一起看位置桥"
+  }
+}
