@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>一起看位置桥</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 14px;
+      font-family: "Microsoft YaHei UI", system-ui, sans-serif;
+      font-size: 13px;
+      color: #22303f;
+      background: #fbfcfe;
+    }
+    h1 { font-size: 16px; margin: 0 0 10px; }
+    .muted { color: #7b8798; font-size: 12px; }
+    .card {
+      border: 1px solid #dce3ec;
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .state { font-weight: 700; margin-bottom: 6px; }
+    .ok { color: #16794b; }
+    .bad { color: #b3261e; }
+    .warn { color: #9a6400; }
+    pre {
+      margin: 6px 0 0;
+      padding: 7px;
+      background: #f6f8fb;
+      border-radius: 7px;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 150px;
+      overflow: auto;
+    }
+    .row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    input {
+      flex: 1;
+      border: 1px solid #cbd6e3;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font: inherit;
+    }
+    button {
+      border: 1px solid #cbd6e3;
+      background: #f7f9fc;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font: inherit;
+    }
+    button:hover { background: #eef3fa; }
+    .tip { line-height: 1.7; }
+    .row input[type="checkbox"] { flex: 0 0 auto; min-width: 0; width: 16px; height: 16px; }
+  </style>
+</head>
+<body>
+  <h1>一起看位置桥 <span class="muted" id="extVersion" style="font-weight:400"></span></h1>
+
+  <div id="errBanner" style="display:none;background:#fdecec;border:1px solid #f0b4b4;border-radius:8px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#8f1f1f;word-break:break-all;"></div>
+  <div id="diag" class="muted" style="margin-bottom:8px;">诊断中…</div>
+
+  <div class="card">
+    <div id="state" class="state warn">正在检查…</div>
+    <div id="detail" class="muted">服务由本机的 Alife「一起看」插件提供。</div>
+    <pre id="last">还没有收到上报。</pre>
+  </div>
+
+  <div class="card">
+    <div class="muted">服务端口（要和插件配置里的「监听端口」一致）</div>
+    <div class="row">
+      <input id="port" type="number" min="1" max="65535" step="1" value="9377">
+      <button id="save">保存</button>
+    </div>
+    <div id="saved" class="muted"></div>
+  </div>
+
+  <div class="card">
+    <label class="row" style="margin-top:0">
+      <input id="caption" type="checkbox">
+      <span>读取视频字幕（实验）</span>
+    </label>
+    <div class="muted" style="margin-top:6px">
+      开启后只读取视频字幕元素（B站 / YouTube 等），随播放位置发给本机插件；
+      不读正文、评论或私信。默认关。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="muted">画面抓取（网页视频的画面只能由扩展截取）</div>
+    <div class="row" style="margin-top:6px">
+      <!-- 「开始抓画面」已移除：1.4.9 起画面/声音全走页面内通道（tabCapture 在 Edge 会原生崩溃） -->
+      <span id="captureState" class="muted">未开启</span>
+    </div>
+    <div class="muted" style="margin-top:6px">
+      1.4.9 起画面与声音都由页面内通道自动抓取，<b>无需任何按钮或授权</b>；打开视频播放即可。
+      PPT / 图表讲解类视频没有语音台词，画面就是内容本体 —— 开了角色才「看得见」。
+      只在画面变化时上传（翻页必触发）。图标出现红点「!」= 插件要画面了但还没开始。
+    </div>
+  </div>
+
+  <div class="card tip muted">
+    装一次就行：之后正常开浏览器、正常看视频，进度会自动报给插件。<br>
+    只在当前可见的标签页上报；不上传、不读页面正文。
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
